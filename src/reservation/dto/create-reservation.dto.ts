@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsString, MaxLength } from "class-validator";
 
 export class CreateReservationDto {
     @IsString()
@@ -21,4 +21,8 @@ export class CreateReservationDto {
     @MaxLength(100)
     @IsNotEmpty()
     detail: string;
+
+    @IsBoolean()
+    @IsNotEmpty()
+    status: boolean;
 }

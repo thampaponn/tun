@@ -4,7 +4,7 @@ import { Reservation } from "./entities/reservation.entity";
 
 @Injectable()
 export class ReservationRepository {
-    private readonly tableName = "reservations";
+    private readonly tableName = "reservation";
     private readonly client: DynamoDBClient;
 
     constructor() {
@@ -45,7 +45,6 @@ export class ReservationRepository {
                 N: String(data.createdAt.getTime())
             },
         }
-        console.log(data.startTime);
         
         if (data.reserveId) {
             itemObject.reservationId = {
@@ -77,6 +76,7 @@ export class ReservationRepository {
         });
 
         const response = await this.client.send(command);
+
         response.Items.forEach((item) => {
             result.push(Reservation.newInstanceFromDynamoDBObject(item));
         });

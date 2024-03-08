@@ -1,5 +1,5 @@
-import { CreateReservationDto } from "../dto/create-reservation.dto";
 import { v4 as uuidv4 } from 'uuid';
+import { CreateReservationDto } from "../dto/create-reservation.dto";
 
 export class Reservation {
     reserveId: string;
@@ -20,6 +20,7 @@ export class Reservation {
         result.startTime = new Date(data.startTime);
         result.endTime = new Date(data.endTime);
         result.detail = data.detail;
+        result.status = data.status;
         result.createdAt = new Date();
         return result;
     }
@@ -31,6 +32,7 @@ export class Reservation {
         result.startTime = new Date(Number(data.startTime.N));
         result.endTime = new Date(Number(data.endTime.N));
         result.detail = data.detail.S;
+        result.status = data.status.BOOL;
         result.createdAt = new Date(Number(data.createdAt.N));
         if (data.updatedAt) {
             result.updatedAt = new Date(Number(data.updatedAt.N));

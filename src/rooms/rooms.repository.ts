@@ -78,7 +78,6 @@ export class RoomsRepository {
         });
 
         const response = await this.client.send(command);
-        console.log(new Date(response.Items[0].createdAt.S));
 
         if (response.Items) {
             response.Items.forEach((item) => {
