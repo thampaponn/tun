@@ -1,5 +1,5 @@
 import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
-import { Injectable } from "@nestjs/common";
+import { HttpException, Injectable } from "@nestjs/common";
 import { User } from "./entities/user.entity";
 
 @Injectable()
@@ -19,21 +19,22 @@ export class UsersRepository {
     }
 
     async login(email: string, password: string) {
-        const result = await this.findByEmail(email);
-        if (result && result.password === password) {
-            return true
+        if (!email) {
+            throw new HttpException('User not found', 404);
         }
-        return false
+
+        if (password !== password) {
+            throw new HttpException('Password is incorrect', 400);
+        }
+
+        return true;
     }
 
     async upsertOne(data: User) {
         if (data.password !== data.confirmPassword) {
-            return false
+            throw new HttpException('Password and confirm password do not match', 400);
         }
         const itemObject: Record<string, AttributeValue> = {
-            userId: {
-                S: data.userId
-            },
             firstName: {
                 S: data.firstName
             },
@@ -56,9 +57,9 @@ export class UsersRepository {
                 N: String(data.createdAt.getTime())
             },
         }
-        if (data.userId) {
-            itemObject.userId = {
-                S: data.userId
+        if (data.email) {
+            itemObject.email = {
+                S: data.email
             }
         }
         if (data.updatedAt) {
@@ -101,36 +102,20 @@ export class UsersRepository {
                 email: { S: email },
             },
         });
+
         const result = await this.client.send(command);
 
         if (result.Item) {
             return User.newInstanceFromDynamoDBObject(result.Item);
         }
-
         return undefined;
     }
 
-    async findByUserId(userId: string) {
-        const command = new GetItemCommand({
-            TableName: this.tableName,
-            Key: {
-                userId: { S: userId },
-            },
-        });
-        const result = await this.client.send(command);
-
-        if (result.Item) {
-            return User.newInstanceFromDynamoDBObject(result.Item);
-        }
-
-        return undefined;
-    }
-
-    async delete(userId: string) {
+    async delete(email: string) {
         const command = new DeleteItemCommand({
             TableName: this.tableName,
             Key: {
-                userId: { S: userId },
+                email: { S: email },
             },
             ReturnConsumedCapacity: "TOTAL",
             ReturnValues: "ALL_OLD",
@@ -139,9 +124,9 @@ export class UsersRepository {
         const result = await this.client.send(command);
 
         if (result.Attributes) {
-            return true;
+            return 'User deleted successfully';
         }
-        return false;
+        throw new HttpException('User not found', 404);
     }
 
 }

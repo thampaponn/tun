@@ -1,11 +1,10 @@
 import { CreateUserDto } from "../dto/create-user.dto";
-import { v4 as uuidv4 } from 'uuid';
+
 export class User {
-    userId: string;
+    email: string;
     firstName: string;
     lastName: string;
     studentId: string;
-    email: string;
     password: string;
     confirmPassword: string;
     createdAt: Date;
@@ -13,7 +12,6 @@ export class User {
 
     static newInstanceFromDTO(data: CreateUserDto) {
         const result = new User();
-        result.userId = uuidv4();
         result.firstName = data.firstName;
         result.lastName = data.lastName;
         result.studentId = data.studentId;
@@ -25,11 +23,10 @@ export class User {
     }
     static newInstanceFromDynamoDBObject(data: any) {
         const result = new User();
-        result.userId = data.userId.S;
+        result.email = data.email.S;
         result.firstName = data.firstName.S;
         result.lastName = data.lastName.S;
         result.studentId = data.studentId.S;
-        result.email = data.email.S;
         result.password = data.password.S;
         result.createdAt = new Date(Number(data.createdAt.N));
         if (data.updatedAt) {
