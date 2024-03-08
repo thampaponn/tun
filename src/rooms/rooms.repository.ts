@@ -18,13 +18,13 @@ export class RoomsRepository {
         });
     }
 
-    async upsertOne(data: Room) {
+    async create(image: Express.Multer.File, data: Room) {
         const itemObject: Record<string, AttributeValue> = {
+            image: {
+                S: image.originalname
+            },
             roomId: {
                 S: data.roomId
-            },
-            image: {
-                S: data.image
             },
             name: {
                 S: data.name
@@ -69,7 +69,54 @@ export class RoomsRepository {
 
         return data;
     }
+    async update(data: Room) {
+        const itemObject: Record<string, AttributeValue> = {
+            roomId: {
+                S: data.roomId
+            },
+            name: {
+                S: data.name
+            },
+            floor: {
+                S: data.floor
+            },
+            detail: {
+                S: data.detail
+            },
+            description: {
+                S: data.description
+            },
+            totalSeat: {
+                N: String(data.totalSeat)
+            },
+            status: {
+                BOOL: data.status
+            },
+            createdAt: {
+                N: String(data.createdAt.getTime())
+            },
+        }
+        if (data.roomId) {
+            itemObject.roomId = {
+                S: data.roomId
+            }
+        }
 
+        if (data.updatedAt) {
+            itemObject.updatedAt = {
+                N: String(data.updatedAt.getTime())
+            }
+        }
+
+        const command = new PutItemCommand({
+            TableName: this.tableName,
+            Item: itemObject
+        })
+
+        await this.client.send(command);
+
+        return data;
+    }
     async findAll() {
         const result: Room[] = [];
 

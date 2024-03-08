@@ -16,7 +16,6 @@ export class ImageService {
   constructor(private readonly configService: ConfigService) { }
 
   async uploadImage(fileName: string, file: Buffer) {
-    fileName = `${Date.now()}_${fileName}`
     await this.s3.send(
       new PutObjectCommand({
         Bucket: 'space-creator',

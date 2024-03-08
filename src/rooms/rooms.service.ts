@@ -11,7 +11,8 @@ export class RoomsService {
 
   constructor(private readonly repository: RoomsRepository, private readonly imageService: ImageService) { }
   async create(image: Express.Multer.File, createRoomDto: CreateRoomDto) {
-    const room = await this.repository.upsertOne(Room.newInstanceFromDTO(createRoomDto));
+    image.originalname = `${Date.now()}_${image.originalname}`
+    const room = await this.repository.create(image, Room.newInstanceFromDTO(createRoomDto));
     if (room) {
       await this.imageService.uploadImage(image.originalname, image.buffer);
     }
@@ -33,7 +34,7 @@ export class RoomsService {
     }
     existingObject.updatedAt = new Date();
 
-    return this.repository.upsertOne(existingObject);
+    return this.repository.update(existingObject);
   }
 
   delete(id: string) {

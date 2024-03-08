@@ -31,6 +31,7 @@ export class RoomsController {
   }
 
   @Patch(':id')
+  @ApiBody({type: UpdateRoomDto})
   update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
     return this.roomsService.update(id, updateRoomDto);
   }
