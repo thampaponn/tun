@@ -18,11 +18,11 @@ export class ReservationService {
   }
 
   findOne(id: string) {
-    return this.repository.findByReserveId(id);
+    return this.repository.findByReservationId(id);
   }
 
   async update(id: string, updateReservationDto: UpdateReservationDto) {
-    const existingObject = await this.repository.findByReserveId(id);
+    const existingObject = await this.repository.findByReservationId(id);
     if (updateReservationDto.detail) {
       existingObject.detail = updateReservationDto.detail;
     }

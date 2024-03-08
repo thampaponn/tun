@@ -21,7 +21,7 @@ export class ReservationRepository {
     async upsertOne(data: Reservation) {
         const itemObject: Record<string, AttributeValue> = {
             reservationId: {
-                S: data.reserveId
+                S: data.reservationId
             },
             roomId: {
                 S: data.roomId
@@ -46,9 +46,9 @@ export class ReservationRepository {
             },
         }
         
-        if (data.reserveId) {
+        if (data.reservationId) {
             itemObject.reservationId = {
-                S: data.reserveId
+                S: data.reservationId
             }
         }
 
@@ -84,11 +84,11 @@ export class ReservationRepository {
         return result;
     }
 
-    async findByReserveId(reserveId: string) {
+    async findByReservationId(reservationId: string) {
         const command = new GetItemCommand({
             TableName: this.tableName,
             Key: {
-                reserveId: { S: reserveId },
+                reservationId: { S: reservationId },
             },
         });
 
@@ -100,11 +100,11 @@ export class ReservationRepository {
         return undefined;
     }
 
-    async delete(reserveId: string) {
+    async delete(reservationId: string) {
         const command = new DeleteItemCommand({
             TableName: this.tableName,
             Key: {
-                reserveId: { S: reserveId },
+                reservationId: { S: reservationId },
             },
             ReturnConsumedCapacity: "TOTAL",
             ReturnValues: "ALL_OLD",

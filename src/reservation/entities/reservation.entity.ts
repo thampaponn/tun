@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CreateReservationDto } from "../dto/create-reservation.dto";
 
 export class Reservation {
-    reserveId: string;
+    reservationId: string;
     userId: string;
     roomId: string;
     startTime: Date;
@@ -14,7 +14,7 @@ export class Reservation {
 
     static newInstanceFromDTO(data: CreateReservationDto) {
         const result = new Reservation();
-        result.reserveId = uuidv4();
+        result.reservationId = uuidv4();
         result.userId = data.userId;
         result.roomId = data.roomId;
         result.startTime = new Date(data.startTime);
@@ -26,7 +26,7 @@ export class Reservation {
     }
     static newInstanceFromDynamoDBObject(data: any) {
         const result = new Reservation();
-        result.reserveId = data.reserveId.S;
+        result.reservationId = data.reservationId.S;
         result.userId = data.userId.S;
         result.roomId = data.roomId.S;
         result.startTime = new Date(Number(data.startTime.N));
