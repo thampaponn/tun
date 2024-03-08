@@ -11,13 +11,25 @@ export class UsersRepository {
         this.client = new DynamoDBClient({
             region: 'us-east-1',
             credentials: {
-                accessKeyId: 'ASIATCKAP6XCZTHZL2M2',
-                secretAccessKey: 'KT8+R0/H3FAZbiz+1+lYOaa09eLEfL2/WGzBepc6',
-                sessionToken: 'FwoGZXIvYXdzEOf//////////wEaDNmowkgvJ9WHYbX4+iLFAYJIliYlnMnfmTeuZv3ASjZy5OpDZkHfTlxLD6dLF5RyzNsqhIz+UK21t9BYGVaqFsQMg2+6i6leCZAw3P2QdTYZGTfjXeku+PpVO9j0qQmkQQ87gesCF0tGpV2kgHuFm9afVJGaIif2ESuAAqbYxF7QkErPTqls0DZk9E9xvsFN9OCq4BykGmkIz7CzH5o3+0w6nU6xKRyoGC7T0M+DHzabvPktyueiXYq4BkUoXZIhkVxy9kqYhbOPwApEpRCsUYnx0MksKNXJqq8GMi24Ap/F8Xo5LfX3XVCwJHF30eIuLPkqsWsNwnbA8jWfsq3rYrhXbFMWCpGq/t8='
+                accessKeyId: 'ASIATCKAP6XCRKGS6LMV',
+                secretAccessKey: '7W3eO3/E4ad1SINwD7MOwl/xbT38TTry33rGJlAC',
+                sessionToken: 'FwoGZXIvYXdzEPL//////////wEaDJZ8JTjNydTOHS6HMSLFATAnK6DqL0SEHDUcvyzx2GBDjecQkN3n2suJqoA3vhXt81UI0R+2N8n/UU7taLjQxXk+A3Hf+Y0en6EVq+i9bsq7pwJcFqGoTaq1pMEcE+GYBXFATvHBk4d6RYHQzTma8mjfdoWRMnVpppls8ypKy4U7V8c2GuFysnUVq3MwJFo+6703nKZdgvhcD8I1Z1UKD/OnlNYanTgAspJb6Dy0dN1OGXRQcuEawLbZtnt30tcthu+aBgPtuk68zc8wkngB9p7N3MhZKPH5rK8GMi1l/A54JEDxgPQ/JEHiLRq025q5XK6cUEKn1cnWLkiKLgwv+bf4mLMH/LR5f8I='
             }
         });
     }
+
+    async login(email: string, password: string) {
+        const result = await this.findByEmail(email);
+        if (result && result.password === password) {
+            return true
+        }
+        return false
+    }
+
     async upsertOne(data: User) {
+        if (data.password !== data.confirmPassword) {
+            return false
+        }
         const itemObject: Record<string, AttributeValue> = {
             userId: {
                 S: data.userId
@@ -36,6 +48,9 @@ export class UsersRepository {
             },
             password: {
                 S: data.password
+            },
+            confirmPassword: {
+                S: data.confirmPassword
             },
             createdAt: {
                 N: String(data.createdAt.getTime())
@@ -77,6 +92,22 @@ export class UsersRepository {
         }
 
         return result
+    }
+
+    async findByEmail(email: string) {
+        const command = new GetItemCommand({
+            TableName: this.tableName,
+            Key: {
+                email: { S: email },
+            },
+        });
+        const result = await this.client.send(command);
+
+        if (result.Item) {
+            return User.newInstanceFromDynamoDBObject(result.Item);
+        }
+
+        return undefined;
     }
 
     async findByUserId(userId: string) {

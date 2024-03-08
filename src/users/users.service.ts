@@ -13,12 +13,23 @@ export class UsersService {
     return await this.repository.upsertOne(User.newInstanceFromDTO(createUserDto));
   }
 
+  async login(email: string, password: string) {
+    const loginUser = await this.repository.findByEmail(email);
+    if (loginUser && loginUser.password === password) {
+      return this.repository.login(email, password);
+    }
+  }
+
   findAll() {
     return this.repository.findAll();
   }
 
-  findOne(id: string) {
-    return this.repository.findByUserId(id);
+  findOneByEmail(email: string) {
+    return this.repository.findByEmail(email);
+  }
+
+  findOneById(userId: string) {
+    return this.repository.findByUserId(userId);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {

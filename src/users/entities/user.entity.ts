@@ -7,6 +7,7 @@ export class User {
     studentId: string;
     email: string;
     password: string;
+    confirmPassword: string;
     createdAt: Date;
     updatedAt?: Date;
 
@@ -18,6 +19,7 @@ export class User {
         result.studentId = data.studentId;
         result.email = data.email;
         result.password = data.password;
+        result.confirmPassword = data.confirmPassword;
         result.createdAt = new Date();
         return result;
     }
