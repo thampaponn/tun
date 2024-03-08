@@ -39,7 +39,7 @@ export class ReservationRepository {
                 S: data.detail
             },
             status: {
-                BOOL: data.status
+                S: data.status
             },
             createdAt: {
                 N: String(data.createdAt.getTime())

@@ -11,9 +11,9 @@ export class RoomsRepository {
         this.client = new DynamoDBClient({
             region: 'us-east-1',
             credentials: {
-                accessKeyId: 'ASIATCKAP6XCZTHZL2M2',
-                secretAccessKey: 'KT8+R0/H3FAZbiz+1+lYOaa09eLEfL2/WGzBepc6',
-                sessionToken: 'FwoGZXIvYXdzEOf//////////wEaDNmowkgvJ9WHYbX4+iLFAYJIliYlnMnfmTeuZv3ASjZy5OpDZkHfTlxLD6dLF5RyzNsqhIz+UK21t9BYGVaqFsQMg2+6i6leCZAw3P2QdTYZGTfjXeku+PpVO9j0qQmkQQ87gesCF0tGpV2kgHuFm9afVJGaIif2ESuAAqbYxF7QkErPTqls0DZk9E9xvsFN9OCq4BykGmkIz7CzH5o3+0w6nU6xKRyoGC7T0M+DHzabvPktyueiXYq4BkUoXZIhkVxy9kqYhbOPwApEpRCsUYnx0MksKNXJqq8GMi24Ap/F8Xo5LfX3XVCwJHF30eIuLPkqsWsNwnbA8jWfsq3rYrhXbFMWCpGq/t8='
+                accessKeyId: 'ASIATCKAP6XC2KG4PXN7',
+                secretAccessKey: 'L2fsFU0D1yY/KsV7YDpQ38qJft80hRChjoFhHVbN',
+                sessionToken: 'FwoGZXIvYXdzEOz//////////wEaDE1YzMna8fwPCD4bPCLFASJom+qV9Rm5vtopWtdXmk7sZnkFN8FXtW8oL5NYeg1VkcVgJqS2oZeNeB/jji6SvNblGNke8bVBVAm97y2lNuVzhUAUWp65pvTB5ESbjRAdHkHjC5fs+in8deO+CN4z4WIsHKQOJdgvIswYoY87WGNydpSBSi2ruoQY+y59s5m9y1o9FXzx6+4Yy3T5yfQD1qUYjYU/SiPo8Ki6zbGyTGdsLMzSn6YboCLhJ+YeHObWLfDKGvaDr6nmiYowXE9QJ3Mjc6t2KOHPq68GMi306KNEzi0xrK7nUe2T2XAmS1tGP/pL+VRPCWJJeoLdIbtShbA2PXky118/EeU='
             }
         });
     }

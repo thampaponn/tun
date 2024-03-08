@@ -1,28 +1,36 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from "class-validator";
 
+
+export enum ReservationStatus {
+    PENDING = 'pending',
+    APPROVED = 'approved',
+    REJECTED = 'rejected',
+}
+
 export class CreateReservationDto {
-    @IsString()
+    @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     userId: string;
 
-    @IsString()
+    @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     roomId: string;
 
-    @IsString()
+    @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     startTime: Date;
 
-    @IsString()
+    @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     endTime: Date;
 
-    @IsString()
+    @ApiProperty({ type: 'string' })
     @MaxLength(100)
     @IsNotEmpty()
     detail: string;
 
-    @IsBoolean()
+    @ApiProperty({ type: 'string', enum: ReservationStatus, default: ReservationStatus.PENDING })
     @IsNotEmpty()
-    status: boolean;
+    status: ReservationStatus;
 }

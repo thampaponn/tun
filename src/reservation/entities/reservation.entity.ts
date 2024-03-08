@@ -8,7 +8,7 @@ export class Reservation {
     startTime: Date;
     endTime: Date;
     detail: string;
-    status: boolean;
+    status: string;
     createdAt: Date;
     updatedAt?: Date;
 

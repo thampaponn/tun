@@ -6,7 +6,7 @@ export class Report {
     userId: string;
     roomId: string;
     detail: string;
-    status: boolean;
+    status: string;
     createdAt: Date;
     updatedAt?: Date;
 
