@@ -1,4 +1,6 @@
 import { CreateUserDto } from "../dto/create-user.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
+import { UserDto } from "../dto/user.dto";
 
 export class User {
     email: string;
@@ -22,6 +24,7 @@ export class User {
         return result;
     }
     static newInstanceFromDynamoDBObject(data: any) {
+        console.log(data);
         const result = new User();
         result.email = data.email.S;
         result.firstName = data.firstName.S;

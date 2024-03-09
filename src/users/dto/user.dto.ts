@@ -32,6 +32,11 @@ export class UserDto {
     @MaxLength(30)
     password: string;
 
+    @ApiProperty({ type: 'string' })
+    @IsNotEmpty()
+    @MaxLength(30)
+    confirmPassword: string;
+
     @ApiProperty({ type: 'string', enum: UserRole, default: UserRole.USER })
     @IsNotEmpty()
     role: UserRole;

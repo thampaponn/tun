@@ -30,9 +30,9 @@ export class UsersController {
     return this.usersService.findOneByEmail(email);
   }
 
-  @Patch(':email')
-  update(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(email, updateUserDto);
+  @Patch('forgot-password/:email')
+  async forgotPassword(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
+      return this.usersService.updatePasswordByEmail(email, updateUserDto);
   }
 
   @Delete(':email')

@@ -1,6 +1,7 @@
-import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { HttpException, Injectable } from "@nestjs/common";
 import { User } from "./entities/user.entity";
+import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersRepository {
@@ -30,19 +31,32 @@ export class UsersRepository {
         return true;
     }
 
-    async updatePassword(email: string, password: string) {
-        const command = new PutItemCommand({
+    async updatePassword(email: string, newPassword: string) {
+        const command = new UpdateItemCommand({
             TableName: this.tableName,
-            Item: {
-                email: { S: email },
-                password: { S: password },
-            }
+            Key: {
+                email: { S: email }
+            },
+            UpdateExpression: "SET #passwordAttr = :newPassword",
+            ExpressionAttributeNames: {
+                "#passwordAttr": "password" // Use ExpressionAttributeNames to handle reserved words like 'password'
+            },
+            ExpressionAttributeValues: {
+                ":newPassword": { S: newPassword }
+            },
+            ReturnValues: "ALL_NEW"
         });
-
-        await this.client.send(command);
-
-        return 'Password updated successfully';
+    
+        try {
+            const response = await this.client.send(command);
+            return response; // Return whatever you need
+        } catch (error) {
+            // Handle errors appropriately
+            console.error("Error updating password:", error);
+            throw error; // Rethrow or handle the error as needed
+        }
     }
+    
 
     async upsertOne(data: User) {
         if (data.password !== data.confirmPassword) {
@@ -94,7 +108,7 @@ export class UsersRepository {
 
     async findAll() {
         const result: User[] = [];
-
+        
         const command = new ScanCommand({
             TableName: this.tableName,
         });
