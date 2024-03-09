@@ -27,17 +27,17 @@ export class UsersService {
       
       const user = await this.repository.findByEmail(loginDto.email);
       if (!user) {
-        throw new UnauthorizedException('User is not exists');
+        throw new HttpException('User is not exists', 400);
       }
 
       if (loginDto.password !== user.password) {
-        throw new UnauthorizedException('Password is invalid');
+        throw new HttpException('Password is invalid', 400);
       }
 
       return true
     } catch (error) {
       console.log(error);
-      throw new UnauthorizedException(HttpStatus.BAD_REQUEST, error);
+      throw new HttpException('Email or password is invalid', 400);
     }
   }
 
@@ -49,14 +49,22 @@ export class UsersService {
     return this.repository.findByEmail(id);
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const existingObject = await this.repository.findByEmail(id);
-    if (updateUserDto.password) {
-      existingObject.password = updateUserDto.password;
+  async updatePasswordByEmail(email: string, updateUserDto: UpdateUserDto) {
+    const user = await this.repository.findByEmail(email);
+    if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
-    existingObject.updatedAt = new Date();
 
-    return this.repository.upsertOne(existingObject);
+    if (updateUserDto.password !== updateUserDto.confirmPassword) {
+        return false
+    }
+
+    user.password = updateUserDto.password;
+    user.updatedAt = new Date();
+
+    await this.repository.updatePassword(email, user.password);
+
+    return 'Password updated successfully';
   }
 
   delete(id: string) {

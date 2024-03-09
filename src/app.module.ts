@@ -9,7 +9,10 @@ import { ImageModule } from './image/image.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UsersModule, RoomsModule, ReservationModule, ReportModule, ImageModule, ConfigModule.forRoot({ isGlobal: true })],
+  imports: [UsersModule, RoomsModule, ReservationModule, ReportModule, ImageModule, ConfigModule.forRoot({ 
+    isGlobal: true,
+    envFilePath: '.env'
+  })],
   controllers: [AppController],
   providers: [AppService],
 })
