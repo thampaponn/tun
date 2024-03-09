@@ -28,7 +28,7 @@ export class UsersRepository {
             throw new HttpException('Password is incorrect', 400);
         }
 
-        return true;
+        return email;
     }
 
     async updatePassword(email: string, newPassword: string) {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateImageDto } from './dto/create-image.dto';
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -26,9 +26,15 @@ export class ImageService {
     return 'success'
   }
 
-  // async findOne(fileName: string) {
-  //   return ;
-  // }
+  async findOne(fileName: string) {
+    await this.s3.send(
+      new GetObjectCommand({
+        Bucket: 'space-creator',
+        Key: fileName,
+      })
+    )
+    return 'https://space-creator.s3.amazonaws.com/' + fileName
+  }
 
   async delete(fileName: string) {
     await this.s3.send(

@@ -15,6 +15,12 @@ export class ImageController {
     await this.imageService.uploadImage(image.originalname, image.buffer);
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.imageService.findOne(id);
+  
+  }
+
   @Delete(':id')
   async deleteImage(@Param('id') id: string) {
     await this.imageService.delete(id);
