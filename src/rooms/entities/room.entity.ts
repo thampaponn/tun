@@ -16,7 +16,7 @@ export class Room {
     static newInstanceFromDTO(data: CreateRoomDto) {
         const result = new Room();
         result.roomId = uuidv4();
-        result.image = data.image;
+        result.image = 'https://space-creator.s3.amazonaws.com/' + data.image;
         result.name = data.name;
         result.floor = data.floor;
         result.detail = data.detail;
@@ -29,12 +29,12 @@ export class Room {
     static newInstanceFromDynamoDBObject(data: any) {
         const result = new Room();
         result.roomId = data.roomId.S;
-        result.image = data.image.S;
+        result.image = 'https://space-creator.s3.amazonaws.com/' + data.image.S;
         result.name = data.name.S;
         result.floor = data.floor.S;
         result.detail = data.detail.S;
         result.description = data.description.S;
-        result.totalSeat = data.totalSeat.S;
+        result.totalSeat = data.totalSeat.N;
         result.status = data.status.BOOL;
         result.createdAt = new Date(Number(data.createdAt.N));
         if (data.updatedAt) {

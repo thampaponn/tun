@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @Controller('reservation')
@@ -22,11 +21,6 @@ export class ReservationController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reservationService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReservationDto: UpdateReservationDto) {
-    return this.reservationService.update(id, updateReservationDto);
   }
 
   @Delete(':id')

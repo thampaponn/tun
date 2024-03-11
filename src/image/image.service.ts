@@ -35,7 +35,7 @@ export class ImageService {
         })
       );
 
-      const objectList = response.Contents.map(object => object.Key);
+      const objectList = response.Contents.map(object => 'https://space-creator.s3.amazonaws.com/' + object.Key);
 
       return objectList;
     } catch (error) {

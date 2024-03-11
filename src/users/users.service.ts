@@ -3,7 +3,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
 import { User } from './entities/user.entity';
-import { log } from 'console';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
@@ -12,8 +11,6 @@ export class UsersService {
   constructor(private readonly repository: UsersRepository) { }
 
   async create(createUserDto: CreateUserDto) {
-    console.log(createUserDto);
-    
     const existingUser = await this.repository.findByEmail(createUserDto.email);
     if (existingUser) {
       throw new HttpException('Email already exists', 400);
@@ -23,8 +20,6 @@ export class UsersService {
 
   async login(loginDto: LoginDto) {
     try {
-      console.log(loginDto);
-      
       const user = await this.repository.findByEmail(loginDto.email);
       if (!user) {
         throw new HttpException('User is not exists', 400);

@@ -11,17 +11,17 @@ export enum ReservationStatus {
 export class CreateReservationDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
-    userId: string;
+    email: string;
 
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
     roomId: string;
 
-    @ApiProperty({ type: 'string' })
+    @ApiProperty({ type: 'string', description: 'isoString()' })
     @IsNotEmpty()
     startTime: Date;
 
-    @ApiProperty({ type: 'string' })
+    @ApiProperty({ type: 'string', description: 'isoString()' })
     @IsNotEmpty()
     endTime: Date;
 

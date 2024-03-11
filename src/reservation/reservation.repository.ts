@@ -26,8 +26,8 @@ export class ReservationRepository {
             roomId: {
                 S: data.roomId
             },
-            userId: {
-                S: data.userId
+            email: {
+                S: data.email
             },
             startTime: {
                 N: String(data.startTime.getTime())

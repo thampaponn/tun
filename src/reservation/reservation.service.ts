@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { Reservation } from './entities/reservation.entity';
 import { ReservationRepository } from './reservation.repository';
 
@@ -19,16 +18,6 @@ export class ReservationService {
 
   findOne(id: string) {
     return this.repository.findByReservationId(id);
-  }
-
-  async update(id: string, updateReservationDto: UpdateReservationDto) {
-    const existingObject = await this.repository.findByReservationId(id);
-    if (updateReservationDto.detail) {
-      existingObject.detail = updateReservationDto.detail;
-    }
-    existingObject.updatedAt = new Date();
-
-    return this.repository.upsertOne(existingObject);
   }
 
   delete(id: string) {
