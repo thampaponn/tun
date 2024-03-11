@@ -81,6 +81,9 @@ export class UsersRepository {
             confirmPassword: {
                 S: data.confirmPassword
             },
+            role: {
+                S: data.role
+            },
             createdAt: {
                 N: String(data.createdAt.getTime())
             },
@@ -114,13 +117,14 @@ export class UsersRepository {
         });
 
         const response = await this.client.send(command);
-
+        console.log(response.Items);
+        
         if (response.Items) {
             response.Items.forEach((item) => {
                 result.push(User.newInstanceFromDynamoDBObject(item));
             });
         }
-
+        
         return result
     }
 

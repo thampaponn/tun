@@ -23,10 +23,10 @@ export class User {
         result.confirmPassword = data.confirmPassword;
         result.role = data.role;
         result.createdAt = new Date();
+        console.log(result);
         return result;
     }
     static newInstanceFromDynamoDBObject(data: any) {
-        console.log(data);
         const result = new User();
         result.email = data.email.S;
         result.firstName = data.firstName.S;
@@ -38,6 +38,8 @@ export class User {
         if (data.updatedAt) {
             result.updatedAt = new Date(Number(data.updatedAt.N));
         }
+        console.log(result);
+        
         return result;
     }
 
