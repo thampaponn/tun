@@ -9,6 +9,7 @@ export class User {
     studentId: string;
     password: string;
     confirmPassword: string;
+    role: string;
     createdAt: Date;
     updatedAt?: Date;
 
@@ -20,6 +21,7 @@ export class User {
         result.email = data.email;
         result.password = data.password;
         result.confirmPassword = data.confirmPassword;
+        result.role = data.role;
         result.createdAt = new Date();
         return result;
     }
@@ -31,6 +33,7 @@ export class User {
         result.lastName = data.lastName.S;
         result.studentId = data.studentId.S;
         result.password = data.password.S;
+        result.role = data.role.S;
         result.createdAt = new Date(Number(data.createdAt.N));
         if (data.updatedAt) {
             result.updatedAt = new Date(Number(data.updatedAt.N));
