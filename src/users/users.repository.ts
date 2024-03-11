@@ -1,7 +1,6 @@
 import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { HttpException, Injectable } from "@nestjs/common";
 import { User } from "./entities/user.entity";
-import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
 export class UsersRepository {
@@ -46,23 +45,31 @@ export class UsersRepository {
             },
             ReturnValues: "ALL_NEW"
         });
-    
+
         try {
             const response = await this.client.send(command);
-            return response; // Return whatever you need
+            return response;
         } catch (error) {
-            // Handle errors appropriately
             console.error("Error updating password:", error);
-            throw error; // Rethrow or handle the error as needed
+            throw error;
         }
     }
-    
+
 
     async upsertOne(data: User) {
         if (data.password !== data.confirmPassword) {
             throw new HttpException('Password and confirm password do not match', 400);
         }
         const itemObject: Record<string, AttributeValue> = {
+            email: {
+                S: data.email
+            },
+            reservationId: {
+                SS: data.reservationId
+            },
+            reportId: {
+                SS: data.reportId
+            },
             firstName: {
                 S: data.firstName
             },
@@ -71,9 +78,6 @@ export class UsersRepository {
             },
             studentId: {
                 S: data.studentId
-            },
-            email: {
-                S: data.email
             },
             password: {
                 S: data.password
@@ -111,20 +115,20 @@ export class UsersRepository {
 
     async findAll() {
         const result: User[] = [];
-        
+
         const command = new ScanCommand({
             TableName: this.tableName,
         });
 
         const response = await this.client.send(command);
         console.log(response.Items);
-        
+
         if (response.Items) {
             response.Items.forEach((item) => {
                 result.push(User.newInstanceFromDynamoDBObject(item));
             });
         }
-        
+
         return result
     }
 

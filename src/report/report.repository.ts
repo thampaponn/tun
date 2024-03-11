@@ -1,4 +1,4 @@
-import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { Injectable } from "@nestjs/common";
 import { Report } from "./entities/report.entity";
 
@@ -23,8 +23,8 @@ export class ReportRepository {
             reportId: {
                 S: data.reportId
             },
-            userId: {
-                S: data.userId
+            email: {
+                S: data.email
             },
             roomId: {
                 S: data.roomId
@@ -56,8 +56,19 @@ export class ReportRepository {
             TableName: this.tableName,
             Item: itemObject
         });
-
+        const addReportId = new UpdateItemCommand({
+            TableName: "users",
+            Key: {
+                email: { S: data.email }
+            },
+            UpdateExpression: "ADD reportId :reportId",
+            ExpressionAttributeValues: {
+                ":reportId": { SS: [data.reportId] }
+            },
+            ReturnValues: "ALL_NEW"
+        })
         await this.client.send(command);
+        await this.client.send(addReportId);
 
         return data;
     }

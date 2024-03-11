@@ -9,7 +9,7 @@ export enum ReportStatus {
 export class CreateReportDto {
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
-    userId: string;
+    email: string;
 
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()

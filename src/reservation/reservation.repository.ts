@@ -1,4 +1,4 @@
-import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { Injectable } from "@nestjs/common";
 import { Reservation } from "./entities/reservation.entity";
 
@@ -62,8 +62,19 @@ export class ReservationRepository {
             TableName: this.tableName,
             Item: itemObject
         })
-
+        const addReservationId = new UpdateItemCommand({
+            TableName: "users",
+            Key: {
+                email: { S: data.email }
+            },
+            UpdateExpression: "ADD reservationId :reservationId",
+            ExpressionAttributeValues: {
+                ":reservationId": { SS: [data.reservationId] }
+            },
+            ReturnValues: "ALL_NEW"
+        })
         await this.client.send(command);
+        await this.client.send(addReservationId);
 
         return data;
     }

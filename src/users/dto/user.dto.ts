@@ -13,6 +13,14 @@ export class UserDto {
     @IsNotEmpty()
     email: string;
 
+    @ApiProperty({ type: [String] })
+    @Optional()
+    reservationId: string[];
+
+    @ApiProperty({ type: [String] })
+    @Optional()
+    reportId: string[];
+
     @ApiProperty({ type: 'string' })
     @MaxLength(30)
     @IsNotEmpty()
