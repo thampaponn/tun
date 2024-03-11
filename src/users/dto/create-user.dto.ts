@@ -40,6 +40,5 @@ export class CreateUserDto {
     confirmPassword: string;
   
     @ApiProperty({ type: 'string', enum: UserRole, default: UserRole.USER })
-    @IsNotEmpty()
     role: UserRole;
 }

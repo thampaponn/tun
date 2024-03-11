@@ -14,6 +14,10 @@ export class ImageController {
   async uploadImage(@UploadedFile(new ParseFilePipe({ validators: [new FileTypeValidator({ fileType: 'image/jpeg' })] })) image: Express.Multer.File): Promise<void> {
     await this.imageService.uploadImage(image.originalname, image.buffer);
   }
+  @Get()
+  async findAll() {
+    return await this.imageService.findAll();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
