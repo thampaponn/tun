@@ -34,7 +34,7 @@ export class UsersService {
         throw new HttpException('Password is invalid', 400);
       }
 
-      return true
+      return loginDto;
     } catch (error) {
       console.log(error);
       throw new HttpException('Email or password is invalid', 400);
