@@ -1,3 +1,4 @@
+import { Optional } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from "class-validator";
 
@@ -31,6 +32,6 @@ export class CreateReservationDto {
     detail: string;
 
     @ApiProperty({ type: 'string', enum: ReservationStatus, default: ReservationStatus.PENDING })
-    @IsNotEmpty()
+    @Optional()
     status: ReservationStatus;
 }

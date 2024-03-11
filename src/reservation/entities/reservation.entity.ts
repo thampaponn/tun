@@ -32,7 +32,7 @@ export class Reservation {
         result.startTime = new Date(Number(data.startTime.N));
         result.endTime = new Date(Number(data.endTime.N));
         result.detail = data.detail.S;
-        result.status = data.status.BOOL;
+        result.status = data.status.S;
         result.createdAt = new Date(Number(data.createdAt.N));
         if (data.updatedAt) {
             result.updatedAt = new Date(Number(data.updatedAt.N));
