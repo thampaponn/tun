@@ -16,11 +16,11 @@ export class CreateUserDto {
     @IsEmail()
     email: string;
 
-    @ApiProperty({ type: [String] })
+    @ApiProperty({ type: [String] , default: ['empty']})
     @Optional()
     reservationId: string[];
 
-    @ApiProperty({ type: [String] })
+    @ApiProperty({ type: [String], default: ['empty']})
     @Optional()
     reportId: string[];
 
