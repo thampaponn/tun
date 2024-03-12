@@ -38,7 +38,7 @@ export class UsersRepository {
             },
             UpdateExpression: "SET #passwordAttr = :newPassword",
             ExpressionAttributeNames: {
-                "#passwordAttr": "password" // Use ExpressionAttributeNames to handle reserved words like 'password'
+                "#passwordAttr": "password"
             },
             ExpressionAttributeValues: {
                 ":newPassword": { S: newPassword }

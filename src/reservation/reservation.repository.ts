@@ -48,7 +48,7 @@ export class ReservationRepository {
                 N: String(data.createdAt.getTime())
             },
         }
-        
+
         if (data.reservationId) {
             itemObject.reservationId = {
                 S: data.reservationId
@@ -80,6 +80,31 @@ export class ReservationRepository {
         await this.client.send(addReservationId);
 
         return data;
+    }
+
+    async update(reservationId: string, status: string) {
+        const command = new UpdateItemCommand({
+            TableName: this.tableName,
+            Key: {
+                reservationId: { S: reservationId }
+            },
+            UpdateExpression: "SET #status = :status",
+            ExpressionAttributeNames: {
+                "#status": "status"
+            },
+            ExpressionAttributeValues: {
+                ":status": { S: status }
+            },
+            ReturnValues: "ALL_NEW",
+        });
+
+        try {
+            const response = await this.client.send(command);
+            return response;
+        } catch (error) {
+            console.error("Error updating status:", error);
+            throw error;
+        }
     }
 
     async findAll() {

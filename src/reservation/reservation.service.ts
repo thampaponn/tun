@@ -20,6 +20,10 @@ export class ReservationService {
     return this.repository.findByReservationId(id);
   }
 
+  update(id: string, status: string) {
+    return this.repository.update(id, status);
+  }
+
   delete(id: string) {
     return this.repository.delete(id);
   }
