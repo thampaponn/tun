@@ -13,6 +13,10 @@ export class CreateReportDto {
 
     @ApiProperty({ type: 'string' })
     @IsNotEmpty()
+    name: string;
+
+    @ApiProperty({ type: 'string' })
+    @IsNotEmpty()
     roomId: string;
 
     @ApiProperty({ type: 'string' })

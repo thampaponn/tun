@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class Report {
     reportId: string;
     email: string;
+    name: string;
     roomId: string;
     detail: string;
     status: string;
@@ -14,6 +15,7 @@ export class Report {
         const result = new Report();
         result.reportId = uuidv4();
         result.email = data.email;
+        result.name = data.name;
         result.roomId = data.roomId;
         result.detail = data.detail;
         result.status = data.status;
@@ -25,6 +27,7 @@ export class Report {
         const result = new Report();
         result.reportId = data.reportId.S;
         result.email = data.email.S;
+        result.name = data.name.S;
         result.roomId = data.roomId.S;
         result.detail = data.detail.S;
         result.status = data.status.S;

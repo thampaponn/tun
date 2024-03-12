@@ -26,6 +26,9 @@ export class ReportRepository {
             email: {
                 S: data.email
             },
+            name: {
+                S: data.name
+            },
             roomId: {
                 S: data.roomId
             },
