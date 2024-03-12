@@ -18,6 +18,10 @@ export class CreateReservationDto {
     @IsNotEmpty()
     roomId: string;
 
+    @ApiProperty({ type: 'string' })
+    @IsNotEmpty()
+    name: string;
+
     @ApiProperty({ type: 'string', description: 'isoString()' })
     @IsNotEmpty()
     startTime: Date;

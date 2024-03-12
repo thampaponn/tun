@@ -26,6 +26,9 @@ export class ReservationRepository {
             roomId: {
                 S: data.roomId
             },
+            name: {
+                S: data.name
+            },
             email: {
                 S: data.email
             },

@@ -5,6 +5,7 @@ export class Reservation {
     reservationId: string;
     email: string;
     roomId: string;
+    name: string;
     startTime: Date;
     endTime: Date;
     detail: string;
@@ -17,6 +18,7 @@ export class Reservation {
         result.reservationId = uuidv4();
         result.email = data.email;
         result.roomId = data.roomId;
+        result.name = data.name;
         result.startTime = new Date(data.startTime);
         result.endTime = new Date(data.endTime);
         result.detail = data.detail;
@@ -29,6 +31,7 @@ export class Reservation {
         result.reservationId = data.reservationId.S;
         result.email = data.email.S;
         result.roomId = data.roomId.S;
+        result.name = data.name.S;
         result.startTime = new Date(Number(data.startTime.N));
         result.endTime = new Date(Number(data.endTime.N));
         result.detail = data.detail.S;
