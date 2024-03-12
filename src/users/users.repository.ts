@@ -115,33 +115,34 @@ export class UsersRepository {
 
     async findAll(): Promise<User[]> {
         const result: User[] = [];
-
+    
         const command = new ScanCommand({
             TableName: this.tableName,
         });
-
+    
         const response = await this.client.send(command);
-
+    
         if (response.Items) {
             response.Items.forEach((item) => {
                 const reservationIdArray = item.reservationId ? (item.reservationId.SS || []) : [];
                 const reportIdArray = item.reportId ? (item.reportId.SS || []) : [];
-
+    
                 const filteredReservationId = reservationIdArray.filter(id => id !== 'string' && id !== 'empty');
                 const filteredReportId = reportIdArray.filter(id => id !== 'string' && id !== 'empty');
-
-                if (filteredReservationId.length > 0 || filteredReportId.length > 0) {
-                    result.push(User.newInstanceFromDynamoDBObject({
-                        ...item,
-                        reservationId: { SS: filteredReservationId },
-                        reportId: { SS: filteredReportId }
-                    }));
-                }
+    
+                const newUserObject = {
+                    ...item,
+                    reservationId: { SS: filteredReservationId.length > 0 ? filteredReservationId : [] },
+                    reportId: { SS: filteredReportId.length > 0 ? filteredReportId : [] }
+                };
+    
+                result.push(User.newInstanceFromDynamoDBObject(newUserObject));
             });
         }
-
+    
         return result;
     }
+    
 
     async findByEmail(email: string) {
         const command = new GetItemCommand({
