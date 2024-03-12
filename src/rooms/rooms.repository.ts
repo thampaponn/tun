@@ -1,4 +1,4 @@
-import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { AttributeValue, DeleteItemCommand, DynamoDBClient, GetItemCommand, PutItemCommand, ScanCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { Injectable } from "@nestjs/common";
 import { Room } from "./entities/room.entity";
 
@@ -69,53 +69,32 @@ export class RoomsRepository {
 
         return data;
     }
-    async update(data: Room) {
-        const itemObject: Record<string, AttributeValue> = {
-            roomId: {
-                S: data.roomId
-            },
-            name: {
-                S: data.name
-            },
-            floor: {
-                S: data.floor
-            },
-            detail: {
-                S: data.detail
-            },
-            description: {
-                S: data.description
-            },
-            totalSeat: {
-                N: String(data.totalSeat)
-            },
-            status: {
-                BOOL: data.status
-            },
-            createdAt: {
-                N: String(data.createdAt.getTime())
-            },
-        }
-        if (data.roomId) {
-            itemObject.roomId = {
-                S: data.roomId
-            }
-        }
-
-        if (data.updatedAt) {
-            itemObject.updatedAt = {
-                N: String(data.updatedAt.getTime())
-            }
-        }
-
-        const command = new PutItemCommand({
+    async update(roomId: string, status: boolean) {
+        const command = new UpdateItemCommand({
             TableName: this.tableName,
-            Item: itemObject
-        })
-
-        await this.client.send(command);
-
-        return data;
+            Key: {
+                roomId: {
+                    S: roomId
+                }
+            },
+            UpdateExpression: "SET #status = :status",
+            ExpressionAttributeNames: {
+                "#status": "status"
+            },
+            ExpressionAttributeValues: {
+                ":status": {
+                    BOOL: status
+                }
+            },
+            ReturnValues: "ALL_NEW"
+        });
+        try {
+            const response = await this.client.send(command);
+            return response;
+        } catch (error) {
+            console.error("Error updating status:", error);
+            throw error;
+        }
     }
     async findAll() {
         const result: Room[] = [];

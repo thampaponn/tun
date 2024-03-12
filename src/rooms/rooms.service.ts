@@ -27,14 +27,8 @@ export class RoomsService {
     return this.repository.findByRoomId(id);
   }
 
-  async update(id: string, updateRoomDto: UpdateRoomDto) {
-    const existingObject = await this.repository.findByRoomId(id);
-    if (updateRoomDto.detail) {
-      existingObject.detail = updateRoomDto.detail;
-    }
-    existingObject.updatedAt = new Date();
-
-    return this.repository.update(existingObject);
+  update(id: string, status: boolean) {
+    return this.repository.update(id, status);
   }
 
   delete(id: string) {
