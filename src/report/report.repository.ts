@@ -76,6 +76,34 @@ export class ReportRepository {
         return data;
     }
 
+    async update(reportId: string, status: string) {
+        const command = new UpdateItemCommand({
+            TableName: this.tableName,
+            Key: {
+                reportId: {
+                    S: reportId
+                }
+            },
+            UpdateExpression: "SET #status = :status",
+            ExpressionAttributeNames: {
+                "#status": "status"
+            },
+            ExpressionAttributeValues: {
+                ":status": {
+                    S: status
+                }
+            },
+            ReturnValues: "ALL_NEW"
+        });
+        try {
+            const response = await this.client.send(command);
+            return response;
+        } catch (error) {
+            console.error("Error updating status:", error);
+            throw error;
+        }
+    }
+
     async findAll() {
         const result: Report[] = [];
 

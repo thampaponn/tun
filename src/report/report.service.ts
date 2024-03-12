@@ -21,14 +21,8 @@ export class ReportService {
     return this.repository.findByReportId(id);
   }
 
-  async update(id: string, updateReportDto: UpdateReportDto) {
-    const existingObject = await this.repository.findByReportId(id);
-    if (updateReportDto.detail) {
-      existingObject.detail = updateReportDto.detail;
-    }
-    existingObject.updatedAt = new Date();
-
-    return this.repository.upsertOne(existingObject);
+  update(id: string, status: string) {
+    return this.repository.update(id, status);
   }
 
   delete(id: string) {
